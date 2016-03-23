@@ -4,16 +4,16 @@
 
 namespace SXML
 {
-    std::ostream& xmlify(std::ostream& stream, std::string const& name, std::string const& value, XmlifyOptions const& options = {})
+    inline std::ostream& xmlify(std::ostream& stream, std::string const& name, std::string const& value, XmlifyOptions const& options = {})
     {
         using namespace Internal;
 
-        if (!options.inArray)
+        //if (!options.inArray)
             tag_start(stream, name, options);
 
         stream << value;
 
-        if (!options.inArray)
+        //if (!options.inArray)
             tag_end(stream, name, options);
 
         return stream;

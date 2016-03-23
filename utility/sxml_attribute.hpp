@@ -55,4 +55,19 @@ namespace SXML
         {
         }
     };
+
+    namespace Internal
+    {
+        template <typename U>
+        struct isAttribute
+        {
+            constexpr static const bool value = false;
+        };
+
+        template <typename U>
+        struct isAttribute <Attribute <U>>
+        {
+            constexpr static const bool value = true;
+        };
+    }
 }

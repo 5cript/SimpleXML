@@ -1,6 +1,7 @@
 #pragma once
 
 #include "sxml_core.hpp"
+#include "sxml_object.hpp"
 #include "iterator_traits.hpp"
 
 namespace SXML
@@ -23,9 +24,13 @@ namespace SXML
             inArrayOptions.inArray = true;
             for (auto const& i : value)
             {
-                tag_start(stream, name, options);
+                if (!isXmlObject2(i))
+                    tag_start(stream, name, options);
+
                 xmlify(stream, name, i, inArrayOptions);
-                tag_end(stream, name, options);
+
+                if (!isXmlObject2(i))
+                    tag_end(stream, name, options);
             }
             return stream;
         }
