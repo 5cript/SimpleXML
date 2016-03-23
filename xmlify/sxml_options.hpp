@@ -7,5 +7,6 @@ namespace SXML
         char attributeQuotes = '"';
         bool inArray = false;
         bool inObject = false;
+        bool noSpace = true;
     };
 }

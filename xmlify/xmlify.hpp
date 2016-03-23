@@ -12,4 +12,6 @@
 #include "sxml_map.hpp"
 #include "sxml_unordered_map.hpp"
 #include "sxml_unordered_set.hpp"
+#include "sxml_object.hpp"
 #include "sxml_fusion.hpp"
+#include "sxml_optional.hpp"

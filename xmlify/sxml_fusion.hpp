@@ -17,7 +17,7 @@ namespace SXML
     {
         template <typename U>
         typename std::enable_if <isAttribute<U>::value>::type
-        memberTypeDependendXmlifier(std::ostream& stream, bool attributeRun, std::string const& name, U const& value, XmlifyOptions const& options)
+        memberTypeDependendXmlifier(std::ostream& stream, bool attributeRun, bool& anyMembers, std::string const& name, U const& value, XmlifyOptions const& options)
         {
             if (!attributeRun)
                 return;
@@ -26,10 +26,13 @@ namespace SXML
 
         template <typename U>
         typename std::enable_if <!isAttribute<U>::value>::type
-        memberTypeDependendXmlifier(std::ostream& stream, bool attributeRun, std::string const& name, U const& value, XmlifyOptions const& options)
+        memberTypeDependendXmlifier(std::ostream& stream, bool attributeRun, bool& anyMembers, std::string const& name, U const& value, XmlifyOptions const& options)
         {
             if (attributeRun)
                 return;
+            if (!anyMembers)
+                stream << '>';
+            anyMembers = true;
             xmlify(stream, name, value, options);
         }
     }
@@ -48,29 +51,39 @@ namespace SXML
 
             stream << '<' << name;
 
+            bool anyMembers = false;
+
             // attribute run
             boost::mpl::for_each <range> (std::bind <void>(
                 _helper(boost::fusion::result_of::size<T>::type::value),
                 std::placeholders::_1,
                 true,
+                std::ref(anyMembers),
                 std::ref(stream),
-                std::ref(object),
-                std::ref(options))
+                std::cref(object),
+                std::cref(options))
             );
-
-            stream << '>';
 
             // member run
             boost::mpl::for_each <range> (std::bind <void>(
                 _helper(boost::fusion::result_of::size<T>::type::value),
                 std::placeholders::_1,
                 false,
+                std::ref(anyMembers),
                 std::ref(stream),
-                std::ref(object),
-                std::ref(options))
+                std::cref(object),
+                std::cref(options))
             );
 
-            Internal::tag_end(stream, name, options);
+            if (!anyMembers)
+            {
+                if (options.noSpace)
+                    stream << "/>";
+                else
+                    stream << " />";
+            }
+            else
+                Internal::tag_end(stream, name, options);
             return stream;
         }
     private:
@@ -78,11 +91,11 @@ namespace SXML
         {
         public:
             template <typename Index>
-            void operator()(Index, bool attributeRun, std::ostream& os, T const& object, XmlifyOptions const& options) const
+            void operator()(Index, bool attributeRun, bool& anyMembers, std::ostream& os, T const& object, XmlifyOptions const& options) const
             {
                 auto const& member = boost::fusion::at <Index> (object);
 
-                Internal::memberTypeDependendXmlifier<typename std::decay <decltype(member)>::type>(os, attributeRun, boost::fusion::extension::struct_member_name <T, Index::value>::call(), member, options);
+                Internal::memberTypeDependendXmlifier<typename std::decay <decltype(member)>::type>(os, attributeRun, anyMembers, boost::fusion::extension::struct_member_name <T, Index::value>::call(), member, options);
             }
             _helper(int len) : len(len) {}
         private:

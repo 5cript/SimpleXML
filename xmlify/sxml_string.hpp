@@ -8,13 +8,19 @@ namespace SXML
     {
         using namespace Internal;
 
-        //if (!options.inArray)
+        if (!value.empty())
+        {
             tag_start(stream, name, options);
-
-        stream << value;
-
-        //if (!options.inArray)
+            stream << value;
             tag_end(stream, name, options);
+        }
+        else
+        {
+            if (!options.noSpace)
+                stream << '<' << name << " />";
+            else
+                stream << '<' << name << "/>";
+        }
 
         return stream;
     }
