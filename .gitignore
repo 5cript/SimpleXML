@@ -4,3 +4,5 @@ bin/*
 obj/*
 *build_log.html
 *.depend
+*.layout
+test.txt
