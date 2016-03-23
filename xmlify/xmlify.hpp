@@ -10,3 +10,6 @@
 #include "sxml_forward_list.hpp"
 #include "sxml_set.hpp"
 #include "sxml_map.hpp"
+#include "sxml_unordered_map.hpp"
+#include "sxml_unordered_set.hpp"
+#include "sxml_fusion.hpp"

@@ -19,11 +19,12 @@ namespace SXML
                 ||  has_forward_iterator <ContainerT, L...>::value
             >::type* = nullptr)
         {
-            auto withoutTags = options.withoutTags();
+            auto inArrayOptions = options;
+            inArrayOptions.inArray = true;
             for (auto const& i : value)
             {
                 tag_start(stream, name, options);
-                xmlify(stream, name, i, withoutTags);
+                xmlify(stream, name, i, inArrayOptions);
                 tag_end(stream, name, options);
             }
             return stream;

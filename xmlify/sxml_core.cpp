@@ -5,16 +5,14 @@ namespace SXML { namespace Internal
 //#####################################################################################################################
     std::ostream& tag_start(std::ostream& stream, std::string const& name, XmlifyOptions const& options)
     {
-        if (!options.noTags)
-            stream << '<' << name << '>';
+        stream << '<' << name << '>';
 
         return stream;
     }
 //---------------------------------------------------------------------------------------------------------------------
     std::ostream& tag_end(std::ostream& stream, std::string const& name, XmlifyOptions const& options)
     {
-        if (!options.noTags)
-            stream << "</" << name << '>';
+        stream << "</" << name << '>';
         return stream;
     }
 //#####################################################################################################################

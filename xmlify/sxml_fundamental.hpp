@@ -11,9 +11,13 @@ namespace SXML
     {
         using namespace Internal;
 
-        tag_start(stream, name, options);
+        if (!options.inArray)
+            tag_start(stream, name, options);
+
         stream << value;
-        tag_end(stream, name, options);
+
+        if (!options.inArray)
+            tag_end(stream, name, options);
 
         return stream;
     }
