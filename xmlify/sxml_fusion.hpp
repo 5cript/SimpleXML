@@ -95,7 +95,14 @@ namespace SXML
             {
                 auto const& member = boost::fusion::at <Index> (object);
 
-                Internal::memberTypeDependendXmlifier<typename std::decay <decltype(member)>::type>(os, attributeRun, anyMembers, boost::fusion::extension::struct_member_name <T, Index::value>::call(), member, options);
+                Internal::memberTypeDependendXmlifier <typename std::decay <decltype(member)>::type> (
+                    os,
+                    attributeRun,
+                    anyMembers,
+                    boost::fusion::extension::struct_member_name <T, Index::value>::call(),
+                    member,
+                    options
+                );
             }
             _helper(int len) : len(len) {}
         private:
