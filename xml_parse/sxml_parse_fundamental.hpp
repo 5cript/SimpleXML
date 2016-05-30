@@ -1,6 +1,9 @@
 #pragma once
 
 #include "sxml_parse_core.hpp"
+#include "../utility/char_traits.hpp"
+
+#include <type_traits>
 
 namespace SXML
 {
@@ -12,6 +15,22 @@ namespace SXML
         try
         {
             GET_VALUE(T, name, value, {});
+        }
+        DEFAULT_CATCH({}, {})
+    }
+
+
+    template <typename T>
+    typename std::enable_if <Internal::is_char_type<T>::value>::type
+    xml_parse(T& value, std::string const& name, PropertyTree const& object, XmlParseOptions const& options)
+    {
+        try
+        {
+            std::basic_string <T> s;
+            GET_VALUE(std::basic_string <T>, name, s, T{});
+
+            if (!s.empty())
+                value = s.front();
         }
         DEFAULT_CATCH({}, {})
     }
