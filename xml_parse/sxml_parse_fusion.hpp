@@ -76,9 +76,13 @@ namespace SXML
             {
                 auto& member = boost::fusion::at <Index> (object);
 
-                std::string tempName = name + ".";
+                std::string tempName;
+
+                if (!name.empty())
+                    tempName = name + ".";
                 if (attributeRun)
                     tempName += "<xmlattr>.";
+
                 tempName += boost::fusion::extension::struct_member_name<T, Index::value>::call();
 
                 Internal::memberTypeDependendParser <typename std::decay <decltype(member)>::type> (

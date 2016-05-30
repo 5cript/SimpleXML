@@ -21,6 +21,12 @@ namespace SXML
         {
             try
             {
+                GET_VALUE(T, name, value, {});
+            }
+            DEFAULT_CATCH({}, {})
+            /*
+            try
+            {
                 GET_CHILD(name, pt, {});
                 for (auto const& i : pt)
                 {
@@ -30,6 +36,7 @@ namespace SXML
                 }
             }
             DEFAULT_CATCH({}, {})
+            */
         }
     }
 }
