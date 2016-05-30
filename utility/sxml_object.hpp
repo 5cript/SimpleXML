@@ -1,6 +1,10 @@
 #pragma once
 
-#include "sxml_core.hpp"
+#include "../xmlify/sxml_options.hpp"
+
+#include <iosfwd>
+#include <utility>
+#include <string>
 
 namespace SXML
 {
