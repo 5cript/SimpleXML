@@ -14,6 +14,29 @@
 
 namespace SXML
 {
+    namespace Internal
+    {
+        template <typename U>
+        typename std::enable_if <isAttribute<U>::value>::type
+        memberTypeDependendParser(U& value, bool attributeRun, std::string const& name, PropertyTree const& object, XmlParseOptions const& options)
+        {
+            if (!attributeRun)
+                return;
+
+            xml_parse(value.get(), name, object, options);
+        }
+
+        template <typename U>
+        typename std::enable_if <!isAttribute<U>::value>::type
+        memberTypeDependendParser(U& value, bool attributeRun, std::string const& name, PropertyTree const& object, XmlParseOptions const& options)
+        {
+            if (attributeRun)
+                return;
+
+            xml_parse(value, name, object, options);
+        }
+    }
+
     template <typename T>
     class AdaptedParser
     {
@@ -25,35 +48,50 @@ namespace SXML
             typedef boost::mpl::range_c<
                 int,
                 0,
-                boost::fusion::result_of::size<T>::type::value
+                boost::fusion::result_of::size <T>::type::value
             > range;
 
-            std::stringstream sstr;
-            boost::mpl::for_each<range>(std::bind<void>
-			(
-				_helper(boost::fusion::result_of::size<T>::type::value),
-				std::placeholders::_1,
-				std::ref(object),
-				std::ref(name),
-				std::ref(tree),
-				std::ref(options)
-			));
+            // attribute run
+            boost::mpl::for_each <range> (
+                [&](auto Index) {
+                    _helper h{boost::fusion::result_of::size <T>::type::value};
+                    h(Index, true, object, name, tree, options);
+                }
+            );
+
+            // member run
+            boost::mpl::for_each <range> (
+                [&](auto Index) {
+                    _helper h{boost::fusion::result_of::size <T>::type::value};
+                    h(Index, false, object, name, tree, options);
+                }
+            );
         }
     private:
         class _helper
         {
         public:
             template<class Index>
-            void operator()(Index, T& object, std::string const& name, PropertyTree const& tree, XmlParseOptions const& options) const
+            void operator()(Index, bool attributeRun, T& object, std::string const& name, PropertyTree const& tree, XmlParseOptions const& options) const
             {
-                if (name.empty())
-                    xml_parse(boost::fusion::at<Index>(object),
-                              boost::fusion::extension::struct_member_name<T, Index::value>::call(),
-                              tree, options);
-                else
-                    xml_parse(boost::fusion::at<Index>(object),
-                              name + "." + boost::fusion::extension::struct_member_name<T, Index::value>::call(),
-                              tree, options);
+                auto& member = boost::fusion::at <Index> (object);
+
+                std::string tempName;
+
+                if (!name.empty())
+                    tempName = name + ".";
+                if (attributeRun)
+                    tempName += "<xmlattr>.";
+
+                tempName += boost::fusion::extension::struct_member_name<T, Index::value>::call();
+
+                Internal::memberTypeDependendParser <typename std::decay <decltype(member)>::type> (
+                    member,
+                    attributeRun,
+                    tempName,
+                    tree,
+                    options
+                );
             }
             _helper(int len) : len(len) {}
         private:
