@@ -8,7 +8,7 @@ namespace SXML
     namespace Internal
     {
         template <typename T, typename... L, template <typename...> class ContainerT>
-        std::ostream& xml_parse_generic_container(
+        void xml_parse_generic_container(
             ContainerT <T, L...>& value,
             std::string const& name,
             PropertyTree const& object,
