@@ -1,5 +1,7 @@
 #include "sxml_core.hpp"
 
+#include <iostream>
+
 namespace SXML { namespace Internal
 {
 //#####################################################################################################################

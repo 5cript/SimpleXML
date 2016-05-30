@@ -3,7 +3,7 @@
 #include <string>
 #include <utility>
 #include <type_traits>
-#include <iostream>
+#include <iosfwd>
 
 #include "../utility/sxml_attribute.hpp"
 #include "sxml_options.hpp"

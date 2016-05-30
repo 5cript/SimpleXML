@@ -1,7 +1,7 @@
 #pragma once
 
 #include "sxml_core.hpp"
-#include "sxml_object.hpp"
+#include "../utility/sxml_object.hpp"
 
 #include <boost/fusion/mpl.hpp>
 #include <boost/fusion/adapted.hpp>
