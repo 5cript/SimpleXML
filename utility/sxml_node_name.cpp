@@ -21,6 +21,15 @@ namespace SXML
         return *this;
     }
 //---------------------------------------------------------------------------------------------------------------------
+    NodeName NodeName::operator>>(NodeName const& other) const
+    {
+        NodeName n;
+        n.chain_.reserve(chain_.size() + other.chain_.size());
+        n.chain_.insert(n.chain_.end(), chain_.begin(), chain_.end());
+        n.chain_.insert(n.chain_.end(), other.chain_.begin(), other.chain_.end());
+        return n;
+    }
+//---------------------------------------------------------------------------------------------------------------------
     NodeName::operator std::string() const
     {
         return toString();

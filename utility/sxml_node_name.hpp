@@ -21,6 +21,8 @@ namespace SXML
         NodeName& operator=(NodeName const&) = default;
         NodeName& operator=(NodeName&&) = default;
 
+        NodeName operator>>(NodeName const& other) const;
+
         explicit operator std::string() const;
         std::string toString() const;
 
