@@ -2,7 +2,7 @@
 
 #include "sxml_core.hpp"
 #include "../utility/sxml_object.hpp"
-#include "../utility/iterator_traits.hpp"
+#include "../utility/sxml_iterator_traits.hpp"
 
 #include <iostream>
 

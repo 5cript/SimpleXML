@@ -1,7 +1,7 @@
 #pragma once
 
 #include "sxml_core.hpp"
-#include "../utility/char_traits.hpp"
+#include "../utility/sxml_char_traits.hpp"
 
 namespace SXML
 {
