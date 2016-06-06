@@ -2,7 +2,7 @@
 
 namespace SXML
 {
-    void xml_parse(std::string& value, std::string const& name, PropertyTree const& object, XmlParseOptions const& options)
+    void xml_parse(std::string& value, NodeName const& name, PropertyTree const& object, XmlParseOptions const& options)
     {
         try
         {
