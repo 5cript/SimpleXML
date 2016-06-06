@@ -1,7 +1,7 @@
 #pragma once
 
 #include "sxml_parse_core.hpp"
-#include "../utility/char_traits.hpp"
+#include "../utility/sxml_char_traits.hpp"
 
 #include <type_traits>
 
@@ -10,7 +10,7 @@ namespace SXML
     template <typename T,
               class = typename std::enable_if<  (std::is_arithmetic<T>::value && !std::is_same<T, char>::value && !std::is_same<T, wchar_t>::value)
                                               || std::is_enum<T>::value         >::type>
-    void xml_parse(T& value, std::string const& name, PropertyTree const& object, XmlParseOptions const& options)
+    void xml_parse(T& value, NodeName const& name, PropertyTree const& object, XmlParseOptions const& options)
     {
         try
         {
@@ -22,7 +22,7 @@ namespace SXML
 
     template <typename T>
     typename std::enable_if <Internal::is_char_type<T>::value>::type
-    xml_parse(T& value, std::string const& name, PropertyTree const& object, XmlParseOptions const& options)
+    xml_parse(T& value, NodeName const& name, PropertyTree const& object, XmlParseOptions const& options)
     {
         try
         {

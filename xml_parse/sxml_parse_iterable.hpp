@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../utility/iterator_traits.hpp"
+#include "../utility/sxml_iterator_traits.hpp"
 #include "sxml_parse_core.hpp"
 
 namespace SXML
@@ -10,7 +10,7 @@ namespace SXML
         template <typename T, typename... L, template <typename...> class ContainerT>
         void xml_parse_generic_container(
             ContainerT <T, L...>& value,
-            std::string const& name,
+            NodeName const& name,
             PropertyTree const& object,
             XmlParseOptions options = {},
             typename std::enable_if <
@@ -21,7 +21,19 @@ namespace SXML
         {
             try
             {
-                GET_VALUE(T, name, value, {});
+                if (!options.stateMixing)
+                    value.clear();
+
+                auto parent = name.parent();
+                GET_CHILD(parent, pt, {});
+
+                auto range = pt.equal_range(name.getName());
+                for (auto i = range.first; i != range.second; ++i)
+                {
+                    T temp;
+                    xml_parse(temp, "", i->second, options);
+                    value.emplace_back(std::move(temp));
+                }
             }
             DEFAULT_CATCH({}, {})
             /*

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../utility/sxml_attribute.hpp"
+#include "../utility/sxml_node_name.hpp"
 #include "sxml_parse_options.hpp"
 #include "sxml_generic_parser.hpp"
 
@@ -11,7 +12,7 @@ namespace SXML
         options.invalidPathHandler == InvalidPathHandlingBehaviour::Tag) \
     { \
         value = {}; \
-        auto opt = object.tree.get_optional <TYPE> (NAME); \
+        auto opt = object.tree.get_optional <TYPE> (static_cast <std::string> (NAME)); \
         if (!opt) { \
             if (options.invalidPathHandler == InvalidPathHandlingBehaviour::IgnoreAllError) \
                 return; \
@@ -24,7 +25,7 @@ namespace SXML
     } \
     else \
     { \
-        TEMP = object.tree.get <TYPE> (NAME); \
+        TEMP = object.tree.get <TYPE> (static_cast <std::string> (NAME)); \
     }
     // MAKRO END
 
@@ -34,7 +35,7 @@ namespace SXML
         options.invalidPathHandler == InvalidPathHandlingBehaviour::Tag) \
     { \
         value = {}; \
-        auto opt = object.tree.get_child_optional (NAME); \
+        auto opt = object.tree.get_child_optional (static_cast <std::string> (NAME)); \
         if (!opt) { \
             if (options.invalidPathHandler == InvalidPathHandlingBehaviour::IgnoreAllError) \
                 return; \
@@ -47,7 +48,7 @@ namespace SXML
     } \
     else \
     { \
-        RESULT = object.tree.get_child (NAME); \
+        RESULT = object.tree.get_child (static_cast <std::string> (NAME)); \
     }
     // MAKRO END
 

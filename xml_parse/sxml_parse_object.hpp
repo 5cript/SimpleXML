@@ -19,7 +19,7 @@ namespace SXML
             class no { yes m[2];};
             struct BaseMixin
             {
-                void xml_parse(std::string const&,
+                void xml_parse(NodeName const&,
                                PropertyTree const&,
                                XmlParseOptions const&)
                 {}
@@ -29,7 +29,7 @@ namespace SXML
 
             template <typename U>
             static no deduce(U*, Helper<
-                void (BaseMixin::*)(std::string const&,
+                void (BaseMixin::*)(NodeName const&,
                                     PropertyTree const&,
                                     XmlParseOptions const&),
                 &U::parse>* = nullptr);
@@ -41,7 +41,7 @@ namespace SXML
 
     template <typename T>
     typename std::enable_if <Internal::isParsable <T>::value, void>::type
-    xml_parse(T& value, std::string const& name, PropertyTree const& tree, XmlParseOptions const& options = {})
+    xml_parse(T& value, NodeName const& name, PropertyTree const& tree, XmlParseOptions const& options = {})
     {
         value.xml_parse(name, tree, options);
     }

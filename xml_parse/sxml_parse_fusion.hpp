@@ -18,7 +18,7 @@ namespace SXML
     {
         template <typename U>
         typename std::enable_if <isAttribute<U>::value>::type
-        memberTypeDependendParser(U& value, bool attributeRun, std::string const& name, PropertyTree const& object, XmlParseOptions const& options)
+        memberTypeDependendParser(U& value, bool attributeRun, NodeName const& name, PropertyTree const& object, XmlParseOptions const& options)
         {
             if (!attributeRun)
                 return;
@@ -28,7 +28,7 @@ namespace SXML
 
         template <typename U>
         typename std::enable_if <!isAttribute<U>::value>::type
-        memberTypeDependendParser(U& value, bool attributeRun, std::string const& name, PropertyTree const& object, XmlParseOptions const& options)
+        memberTypeDependendParser(U& value, bool attributeRun, NodeName const& name, PropertyTree const& object, XmlParseOptions const& options)
         {
             if (attributeRun)
                 return;
@@ -41,7 +41,7 @@ namespace SXML
     class AdaptedParser
     {
     public:
-        void operator()(T& object, std::string const& name, PropertyTree const& tree, XmlParseOptions const& options) const
+        void operator()(T& object, NodeName const& name, PropertyTree const& tree, XmlParseOptions const& options) const
         {
             //! If you get an Error here, you likely forgot to use BOOST_FUSION_ADAPT_STRUCT !
 
@@ -72,14 +72,14 @@ namespace SXML
         {
         public:
             template<class Index>
-            void operator()(Index, bool attributeRun, T& object, std::string const& name, PropertyTree const& tree, XmlParseOptions const& options) const
+            void operator()(Index, bool attributeRun, T& object, NodeName const& name, PropertyTree const& tree, XmlParseOptions const& options) const
             {
                 auto& member = boost::fusion::at <Index> (object);
 
                 std::string tempName;
 
                 if (!name.empty())
-                    tempName = name + ".";
+                    tempName = static_cast <std::string> (name) + ".";
                 if (attributeRun)
                     tempName += "<xmlattr>.";
 
@@ -102,7 +102,7 @@ namespace SXML
     template <typename Derived>
     struct Parsable
     {
-        void xml_parse(std::string const& name, PropertyTree const& tree, XmlParseOptions const& options = {})
+        void xml_parse(NodeName const& name, PropertyTree const& tree, XmlParseOptions const& options = {})
         {
             AdaptedParser <Derived> parser;
             parser(*static_cast <Derived*> (this), name, tree, options);

@@ -27,5 +27,6 @@ namespace SXML
         char attributeQuotes = '"';
         bool inArray = false;
         bool inObject = false;
+        bool stateMixing = false; // true = containers will not be cleared beforehand
     };
 }
