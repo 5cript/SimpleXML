@@ -1,13 +1,13 @@
 #pragma once
 
-#include "sxml_iterable.hpp"
+#include "sxml_parse_iterable.hpp"
 #include <deque>
 
 namespace SXML
 {
-    template <typename T, typename Alloc = std::allocator <T> >
-    std::ostream& xmlify(std::ostream& stream, std::string const& name, std::deque <T, Alloc> const& value, XmlifyOptions const& options = {})
+    template <typename T>
+    void xml_parse(std::deque <T>& value, NodeName const& name, PropertyTree const& tree, XmlParseOptions const& options = {})
     {
-        return Internal::xmlify_generic_container(stream, name, value, options);
+        Internal::xml_parse_generic_container(value, name, tree, options);
     }
 }

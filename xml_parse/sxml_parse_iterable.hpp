@@ -3,8 +3,6 @@
 #include "../utility/sxml_iterator_traits.hpp"
 #include "sxml_parse_core.hpp"
 
-#include <iostream>
-
 namespace SXML
 {
     namespace Internal
