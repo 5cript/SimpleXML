@@ -7,6 +7,26 @@ namespace SXML
 {
     namespace Internal
     {
+        template <typename T>
+        struct emplacer;
+
+        #define DECLARE_EMPLACER(CONTAINER, FUNCTION) \
+        template <typename... List> \
+        struct emplacer <CONTAINER <List...>> \
+        { \
+            template <typename T> \
+            static void emplace(CONTAINER <List...>& container, T&& element) \
+            { \
+                container.FUNCTION(std::forward <T&&>(element)); \
+            } \
+        }
+
+        DECLARE_EMPLACER(std::vector, emplace_back);
+        DECLARE_EMPLACER(std::deque, emplace_back);
+        DECLARE_EMPLACER(std::set, emplace);
+        DECLARE_EMPLACER(std::list, emplace_back);
+        DECLARE_EMPLACER(std::forward_list, emplace_back);
+
         template <typename T, typename... L, template <typename...> class ContainerT>
         void xml_parse_generic_container(
             ContainerT <T, L...>& value,
@@ -32,7 +52,7 @@ namespace SXML
                 {
                     T temp;
                     xml_parse(temp, "", i->second, options);
-                    value.emplace_back(std::move(temp));
+                    emplacer<ContainerT<T, L...>>::emplace(value, std::move(temp));
                 }
             }
             DEFAULT_CATCH({}, {})

@@ -12,3 +12,5 @@
 #include "sxml_parse_unordered_map.hpp"
 #include "sxml_parse_optional.hpp"
 #include "sxml_parse_pair.hpp"
+#include "sxml_parse_map.hpp"
+#include "sxml_parse_set.hpp"
