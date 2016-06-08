@@ -11,7 +11,7 @@ namespace SXML
     if (options.invalidPathHandler == InvalidPathHandlingBehaviour::IgnoreAllError || \
         options.invalidPathHandler == InvalidPathHandlingBehaviour::Tag) \
     { \
-        value = {}; \
+        value = TYPE{}; \
         auto opt = object.tree.get_optional <TYPE> (static_cast <std::string> (NAME)); \
         if (!opt) { \
             if (options.invalidPathHandler == InvalidPathHandlingBehaviour::IgnoreAllError) \

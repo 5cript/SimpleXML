@@ -1,12 +1,11 @@
 #pragma once
 
-#include <utility>
-
 namespace SXML
 {
     template <typename T>
-    struct Attribute
+    class Content
     {
+    public:
         using type = T;
         T value;
 
@@ -20,39 +19,39 @@ namespace SXML
             return value;
         }
 
-        Attribute& operator=(T const& t)
+        Content& operator=(T const& t)
         {
             value = t;
             return *this;
         }
 
-        Attribute& operator=(T&& t)
+        Content& operator=(T&& t)
         {
             value = std::move(t);
             return *this;
         }
 
-        Attribute(Attribute <T> const& other)
+        Content(Content <T> const& other)
             : value(other.value)
         {
         }
 
-        Attribute(Attribute <T>&& other)
+        Content(Content <T>&& other)
             : value(std::move(other.value))
         {
         }
 
-        Attribute(T const& other)
+        Content(T const& other)
             : value(other)
         {
         }
 
-        Attribute(T&& other)
+        Content(T&& other)
             : value(std::move(other))
         {
         }
 
-        Attribute()
+        Content()
             : value()
         {
         }
@@ -61,13 +60,13 @@ namespace SXML
     namespace Internal
     {
         template <typename U>
-        struct isAttribute
+        struct isContent
         {
             constexpr static const bool value = false;
         };
 
         template <typename U>
-        struct isAttribute <Attribute <U>>
+        struct isContent <Content <U>>
         {
             constexpr static const bool value = true;
         };

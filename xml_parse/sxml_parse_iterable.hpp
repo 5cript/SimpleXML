@@ -56,19 +56,6 @@ namespace SXML
                 }
             }
             DEFAULT_CATCH({}, {})
-            /*
-            try
-            {
-                GET_CHILD(name, pt, {});
-                for (auto const& i : pt)
-                {
-                    T temp;
-                    xml_parse(temp, "", i.second, options);
-                    value.emplace_back(std::move(temp));
-                }
-            }
-            DEFAULT_CATCH({}, {})
-            */
         }
     }
 }

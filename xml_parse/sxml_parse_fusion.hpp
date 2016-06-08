@@ -2,6 +2,7 @@
 
 #include "sxml_parse_core.hpp"
 #include "../utility/sxml_object.hpp"
+#include "../utility/sxml_content.hpp"
 
 #include <boost/fusion/mpl.hpp>
 #include <boost/fusion/adapted.hpp>
@@ -27,13 +28,28 @@ namespace SXML
         }
 
         template <typename U>
-        typename std::enable_if <!isAttribute<U>::value>::type
+        typename std::enable_if <!isAttribute<U>::value && !isContent<U>::value>::type
         memberTypeDependendParser(U& value, bool attributeRun, NodeName const& name, PropertyTree const& object, XmlParseOptions const& options)
         {
             if (attributeRun)
                 return;
 
             xml_parse(value, name, object, options);
+        }
+
+        template <typename U>
+        typename std::enable_if <isContent<U>::value>::type
+        memberTypeDependendParser(U& value, bool attributeRun, NodeName const& name, PropertyTree const& object, XmlParseOptions const& options)
+        {
+            if (attributeRun)
+                return;
+
+            try
+            {
+                typename U::type& v = value.get();
+                GET_VALUE(typename U::type, name.parent().toString(), v, typename U::type{});
+            }
+            DEFAULT_CATCH(typename U::type{}, typename U::type{})
         }
     }
 

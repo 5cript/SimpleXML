@@ -2,6 +2,7 @@
 
 #include "sxml_core.hpp"
 #include "../utility/sxml_object.hpp"
+#include "../utility/sxml_content.hpp"
 
 #include <boost/fusion/mpl.hpp>
 #include <boost/fusion/adapted.hpp>
@@ -25,7 +26,7 @@ namespace SXML
         }
 
         template <typename U>
-        typename std::enable_if <!isAttribute<U>::value>::type
+        typename std::enable_if <!isAttribute<U>::value && !isContent<U>::value>::type
         memberTypeDependendXmlifier(std::ostream& stream, bool attributeRun, bool& anyMembers, std::string const& name, U const& value, XmlifyOptions const& options)
         {
             if (attributeRun)
@@ -34,6 +35,18 @@ namespace SXML
                 stream << '>';
             anyMembers = true;
             xmlify(stream, name, value, options);
+        }
+
+        template <typename U>
+        typename std::enable_if <isContent<U>::value>::type
+        memberTypeDependendXmlifier(std::ostream& stream, bool attributeRun, bool& anyMembers, std::string const& name, U const& value, XmlifyOptions const& options)
+        {
+            if (attributeRun)
+                return;
+            if (!anyMembers)
+                stream << '>';
+            anyMembers = true;
+            stream << static_cast <typename U::type>(value);
         }
     }
 
