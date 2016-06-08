@@ -13,8 +13,7 @@ namespace SXML
     {
         try
         {
-            auto TEST = static_cast <std::string> (name);
-            GET_CHILD(name, pt, (std::unordered_map <std::string, ValueT>()));
+            GET_CHILD(name, pt, (std::unordered_map <std::string, ValueT, HashT, PredT, AllocT>()));
             for (auto const& i : pt)
             {
                 ValueT temp;
