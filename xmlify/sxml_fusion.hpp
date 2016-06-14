@@ -12,6 +12,8 @@
 #include <boost/mpl/range_c.hpp>
 #include <boost/mpl/for_each.hpp>
 
+#include <iostream>
+
 namespace SXML
 {
     namespace Internal

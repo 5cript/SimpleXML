@@ -6,3 +6,4 @@ obj/*
 *.depend
 *.layout
 test.txt
+*.save-failed
