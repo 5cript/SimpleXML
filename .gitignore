@@ -7,3 +7,4 @@ obj/*
 *.layout
 test.txt
 build/*
+*.save-failed

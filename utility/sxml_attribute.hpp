@@ -32,6 +32,9 @@ namespace SXML
             return *this;
         }
 
+        Attribute& operator=(Attribute const&) = default;
+        Attribute& operator=(Attribute&&) = default;
+
         Attribute(Attribute <T> const& other)
             : value(other.value)
         {

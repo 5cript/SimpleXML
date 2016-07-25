@@ -31,6 +31,9 @@ namespace SXML
             return *this;
         }
 
+        Content& operator=(Content const&) = default;
+        Content& operator=(Content&&) = default;
+
         Content(Content <T> const& other)
             : value(other.value)
         {
