@@ -13,7 +13,7 @@ namespace SXML
         try
         {
             auto TEST = static_cast <std::string> (name);
-            GET_CHILD(name, pt, (std::map <std::string, ValueT, CompareT, AllocT>()));
+            SXML_GET_CHILD(name, pt, (std::map <std::string, ValueT, CompareT, AllocT>()));
             for (auto const& i : pt)
             {
                 ValueT temp;
@@ -21,6 +21,6 @@ namespace SXML
                 value[i.first] = temp;
             }
         }
-        DEFAULT_CATCH({}, {})
+        SXML_DEFAULT_CATCH({}, {})
     }
 }

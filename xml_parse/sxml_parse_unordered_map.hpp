@@ -13,7 +13,7 @@ namespace SXML
     {
         try
         {
-            GET_CHILD(name, pt, (std::unordered_map <std::string, ValueT, HashT, PredT, AllocT>()));
+            SXML_GET_CHILD(name, pt, (std::unordered_map <std::string, ValueT, HashT, PredT, AllocT>()));
             for (auto const& i : pt)
             {
                 ValueT temp;
@@ -21,6 +21,6 @@ namespace SXML
                 value[i.first] = temp;
             }
         }
-        DEFAULT_CATCH({}, {})
+        SXML_DEFAULT_CATCH({}, {})
     }
 }

@@ -10,7 +10,7 @@ namespace SXML
         template <typename T>
         struct emplacer;
 
-        #define DECLARE_EMPLACER(CONTAINER, FUNCTION) \
+        #define SXML_DECLARE_EMPLACER(CONTAINER, FUNCTION) \
         template <typename... List> \
         struct emplacer <CONTAINER <List...>> \
         { \
@@ -21,11 +21,11 @@ namespace SXML
             } \
         }
 
-        DECLARE_EMPLACER(std::vector, emplace_back);
-        DECLARE_EMPLACER(std::deque, emplace_back);
-        DECLARE_EMPLACER(std::set, emplace);
-        DECLARE_EMPLACER(std::list, emplace_back);
-        DECLARE_EMPLACER(std::forward_list, emplace_back);
+        SXML_DECLARE_EMPLACER(std::vector, emplace_back);
+        SXML_DECLARE_EMPLACER(std::deque, emplace_back);
+        SXML_DECLARE_EMPLACER(std::set, emplace);
+        SXML_DECLARE_EMPLACER(std::list, emplace_back);
+        SXML_DECLARE_EMPLACER(std::forward_list, emplace_back);
 
         template <typename T, typename... L, template <typename...> class ContainerT>
         void xml_parse_generic_container(
@@ -45,7 +45,7 @@ namespace SXML
                     value.clear();
 
                 auto parent = name.parent();
-                GET_CHILD(parent, pt, {});
+                SXML_GET_CHILD(parent, pt, {});
 
                 auto range = pt.equal_range(name.getName());
                 for (auto i = range.first; i != range.second; ++i)
@@ -55,7 +55,7 @@ namespace SXML
                     emplacer<ContainerT<T, L...>>::emplace(value, std::move(temp));
                 }
             }
-            DEFAULT_CATCH({}, {})
+            SXML_DEFAULT_CATCH({}, {})
         }
     }
 }

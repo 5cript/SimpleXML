@@ -21,6 +21,6 @@ namespace SXML
                 value = v;
             }
         }
-        DEFAULT_CATCH(boost::none, boost::none);
+        SXML_DEFAULT_CATCH(boost::none, boost::none);
     }
 }

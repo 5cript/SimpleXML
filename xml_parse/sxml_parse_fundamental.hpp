@@ -14,9 +14,9 @@ namespace SXML
     {
         try
         {
-            GET_VALUE(T, name, value, {});
+            SXML_GET_VALUE(T, name, value, {});
         }
-        DEFAULT_CATCH({}, {})
+        SXML_DEFAULT_CATCH({}, {})
     }
 
 
@@ -27,11 +27,11 @@ namespace SXML
         try
         {
             std::basic_string <T> s;
-            GET_VALUE(std::basic_string <T>, name, s, T{});
+            SXML_GET_VALUE(std::basic_string <T>, name, s, T{});
 
             if (!s.empty())
                 value = s.front();
         }
-        DEFAULT_CATCH({}, {})
+        SXML_DEFAULT_CATCH({}, {})
     }
 }

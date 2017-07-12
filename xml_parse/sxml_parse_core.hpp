@@ -7,7 +7,7 @@
 
 namespace SXML
 {
-    #define GET_VALUE(TYPE, NAME, TEMP, TAG_VALUE) \
+    #define SXML_GET_VALUE(TYPE, NAME, TEMP, TAG_VALUE) \
     if (options.invalidPathHandler == InvalidPathHandlingBehaviour::IgnoreAllError || \
         options.invalidPathHandler == InvalidPathHandlingBehaviour::Tag) \
     { \
@@ -29,7 +29,7 @@ namespace SXML
     }
     // MAKRO END
 
-    #define GET_CHILD(NAME, RESULT, TAG_VALUE) \
+    #define SXML_GET_CHILD(NAME, RESULT, TAG_VALUE) \
     decltype(object.tree) RESULT;\
     if (options.invalidPathHandler == InvalidPathHandlingBehaviour::IgnoreAllError || \
         options.invalidPathHandler == InvalidPathHandlingBehaviour::Tag) \
@@ -52,7 +52,7 @@ namespace SXML
     }
     // MAKRO END
 
-    #define DEFAULT_PROPERTY_ERROR_HANDLER(DEFAULT_VALUE, TAG_VALUE)		\
+    #define SXML_DEFAULT_PROPERTY_ERROR_HANDLER(DEFAULT_VALUE, TAG_VALUE)		\
 	switch (options.invalidPropertyHandler) {								\
 		case (InvalidPropertyHandlingBehaviour::Default):		\
 			value = DEFAULT_VALUE;								\
@@ -69,7 +69,7 @@ namespace SXML
 	}
 	// MAKRO END
 
-	#define DEFAULT_PATH_ERROR_HANDLER(DEFAULT_VALUE, TAG_VALUE)		\
+	#define SXML_DEFAULT_PATH_ERROR_HANDLER(DEFAULT_VALUE, TAG_VALUE)		\
 	switch (options.invalidPathHandler) {								\
 		case (InvalidPathHandlingBehaviour::Default):		\
 			value = DEFAULT_VALUE;								\
@@ -86,14 +86,14 @@ namespace SXML
 	}
 	// MAKRO END
 
-	#define DEFAULT_CATCH(DEFAULT_VALUE, TAG_VALUE) \
+	#define SXML_DEFAULT_CATCH(DEFAULT_VALUE, TAG_VALUE) \
 	catch (boost::property_tree::ptree_bad_data& exc) \
     { \
-        DEFAULT_PROPERTY_ERROR_HANDLER(DEFAULT_VALUE, TAG_VALUE); \
+        SXML_DEFAULT_PROPERTY_ERROR_HANDLER(DEFAULT_VALUE, TAG_VALUE); \
     } \
     catch (boost::property_tree::ptree_bad_path& exc) \
     { \
-        DEFAULT_PATH_ERROR_HANDLER(DEFAULT_VALUE, TAG_VALUE); \
+        SXML_DEFAULT_PATH_ERROR_HANDLER(DEFAULT_VALUE, TAG_VALUE); \
     }
     // MAKRO END
 }

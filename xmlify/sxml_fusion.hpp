@@ -4,7 +4,6 @@
 #include "../utility/sxml_object.hpp"
 #include "../utility/sxml_content.hpp"
 
-#include <boost/fusion/mpl.hpp>
 #include <boost/fusion/adapted.hpp>
 #include <boost/fusion/include/at.hpp>
 #include <boost/fusion/include/size.hpp>

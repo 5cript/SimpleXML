@@ -12,6 +12,6 @@ namespace SXML
             xml_parse(value.first, name >> "first", object, options);
             xml_parse(value.second, name >> "second", object, options);
         }
-        DEFAULT_CATCH({}, {});
+        SXML_DEFAULT_CATCH({}, {});
     }
 }

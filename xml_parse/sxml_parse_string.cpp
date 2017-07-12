@@ -6,8 +6,8 @@ namespace SXML
     {
         try
         {
-            GET_VALUE(std::string, name, value, "");
+            SXML_GET_VALUE(std::string, name, value, "");
         }
-        DEFAULT_CATCH("", "")
+        SXML_DEFAULT_CATCH("", "")
     }
 }

@@ -4,7 +4,6 @@
 #include "../utility/sxml_object.hpp"
 #include "../utility/sxml_content.hpp"
 
-#include <boost/fusion/mpl.hpp>
 #include <boost/fusion/adapted.hpp>
 #include <boost/fusion/include/at.hpp>
 #include <boost/fusion/include/size.hpp>
@@ -47,9 +46,9 @@ namespace SXML
             try
             {
                 typename U::type& v = value.get();
-                GET_VALUE(typename U::type, name.parent().toString(), v, typename U::type{});
+                SXML_GET_VALUE(typename U::type, name.parent().toString(), v, typename U::type{});
             }
-            DEFAULT_CATCH(typename U::type{}, typename U::type{})
+            SXML_DEFAULT_CATCH(typename U::type{}, typename U::type{})
         }
     }
 
