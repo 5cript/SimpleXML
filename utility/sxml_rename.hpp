@@ -106,7 +106,7 @@ namespace SXML
         {
             using namespace Internal;
 
-            return SXML::xmlify(stream, name::c_str, *this, options);
+            return SXML::xmlify(stream, name::c_str, objectValue_, options);
         }
 
     private:
