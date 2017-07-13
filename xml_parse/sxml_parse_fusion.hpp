@@ -3,6 +3,7 @@
 #include "sxml_parse_core.hpp"
 #include "../utility/sxml_object.hpp"
 #include "../utility/sxml_content.hpp"
+#include "../utility/sxml_inline.hpp"
 
 #include <boost/fusion/adapted.hpp>
 #include <boost/fusion/include/at.hpp>
@@ -27,16 +28,6 @@ namespace SXML
         }
 
         template <typename U>
-        typename std::enable_if <!isAttribute<U>::value && !isContent<U>::value>::type
-        memberTypeDependendParser(U& value, bool attributeRun, NodeName const& name, PropertyTree const& object, XmlParseOptions const& options)
-        {
-            if (attributeRun)
-                return;
-
-            xml_parse(value, name, object, options);
-        }
-
-        template <typename U>
         typename std::enable_if <isContent<U>::value>::type
         memberTypeDependendParser(U& value, bool attributeRun, NodeName const& name, PropertyTree const& object, XmlParseOptions const& options)
         {
@@ -49,6 +40,26 @@ namespace SXML
                 SXML_GET_VALUE(typename U::type, name.parent().toString(), v, typename U::type{});
             }
             SXML_DEFAULT_CATCH(typename U::type{}, typename U::type{})
+        }
+
+        template <typename U>
+        typename std::enable_if <isInline<U>::value>::type
+        memberTypeDependendParser(U& value, bool attributeRun, NodeName const& name, PropertyTree const& object, XmlParseOptions const& options)
+        {
+            if (attributeRun)
+                return;
+
+            xml_parse(value.get(), name, object, options);
+        }
+
+        template <typename U>
+        typename std::enable_if <!isAttribute<U>::value && !isContent<U>::value && !isInline<U>::value>::type
+        memberTypeDependendParser(U& value, bool attributeRun, NodeName const& name, PropertyTree const& object, XmlParseOptions const& options)
+        {
+            if (attributeRun)
+                return;
+
+            xml_parse(value, name, object, options);
         }
     }
 

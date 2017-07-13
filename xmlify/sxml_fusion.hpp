@@ -3,6 +3,7 @@
 #include "sxml_core.hpp"
 #include "../utility/sxml_object.hpp"
 #include "../utility/sxml_content.hpp"
+#include "../utility/sxml_inline.hpp"
 
 #include <boost/fusion/adapted.hpp>
 #include <boost/fusion/include/at.hpp>
@@ -11,12 +12,14 @@
 #include <boost/mpl/range_c.hpp>
 #include <boost/mpl/for_each.hpp>
 
+#include <functional>
 #include <iostream>
 
 namespace SXML
 {
     namespace Internal
     {
+        // Attribute
         template <typename U>
         typename std::enable_if <isAttribute<U>::value>::type
         memberTypeDependendXmlifier(std::ostream& stream, bool attributeRun, bool& anyMembers, std::string const& name, U const& value, XmlifyOptions const& options)
@@ -26,28 +29,43 @@ namespace SXML
             stream << ' ' << name << '=' << options.attributeQuotes << value.value << options.attributeQuotes;
         }
 
+        // Inline
         template <typename U>
-        typename std::enable_if <!isAttribute<U>::value && !isContent<U>::value>::type
-        memberTypeDependendXmlifier(std::ostream& stream, bool attributeRun, bool& anyMembers, std::string const& name, U const& value, XmlifyOptions const& options)
+        typename std::enable_if <isInline<U>::value>::type
+        memberTypeDependendXmlifier(std::ostream& stream, bool attributeRun, bool& anyMembers, std::string const& name, U const& value, XmlifyOptions options)
         {
             if (attributeRun)
                 return;
-            if (!anyMembers)
+            if (!anyMembers && !options.inLine)
                 stream << '>';
             anyMembers = true;
-            xmlify(stream, name, value, options);
+            options.inLine = true;
+            xmlify(stream, name, value.get(), options);
         }
 
+        // Content
         template <typename U>
         typename std::enable_if <isContent<U>::value>::type
         memberTypeDependendXmlifier(std::ostream& stream, bool attributeRun, bool& anyMembers, std::string const& name, U const& value, XmlifyOptions const& options)
         {
             if (attributeRun)
                 return;
-            if (!anyMembers)
+            if (!anyMembers && !options.inLine)
                 stream << '>';
             anyMembers = true;
             stream << static_cast <typename U::type>(value);
+        }
+
+        template <typename U>
+        typename std::enable_if <!isAttribute<U>::value && !isContent<U>::value && !isInline<U>::value>::type
+        memberTypeDependendXmlifier(std::ostream& stream, bool attributeRun, bool& anyMembers, std::string const& name, U const& value, XmlifyOptions const& options)
+        {
+            if (attributeRun)
+                return;
+            if (!anyMembers && !options.inLine)
+                stream << '>';
+            anyMembers = true;
+            xmlify(stream, name, value, options);
         }
     }
 
@@ -63,7 +81,8 @@ namespace SXML
                 boost::fusion::result_of::size<T>::type::value
             > range;
 
-            stream << '<' << name;
+            if (!options.inLine)
+                stream << '<' << name;
 
             bool anyMembers = false;
 
@@ -89,15 +108,19 @@ namespace SXML
                 std::cref(options))
             );
 
-            if (!anyMembers)
+            if (!options.inLine)
             {
-                if (options.noSpace)
-                    stream << "/>";
+                if (!anyMembers)
+                {
+                    if (options.noSpace)
+                        stream << "/>";
+                    else
+                        stream << " />";
+                }
                 else
-                    stream << " />";
+                    Internal::tag_end(stream, name, options);
             }
-            else
-                Internal::tag_end(stream, name, options);
+
             return stream;
         }
     private:

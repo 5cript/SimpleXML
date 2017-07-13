@@ -76,12 +76,12 @@ namespace SXML
             return {};
 
         std::string result;
-        for (auto i = std::cbegin(chain_), end = std::cend(chain_) - 1; i < end; ++i)
+        for (auto i = std::begin(chain_), end = std::end(chain_) - 1; i < end; ++i)
         {
             result += *i;
             result.push_back('.');
         }
-        result += *(std::cend(chain_) - 1);
+        result += *(std::end(chain_) - 1);
         return result;
     }
 //---------------------------------------------------------------------------------------------------------------------
