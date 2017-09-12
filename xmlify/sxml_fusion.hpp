@@ -36,10 +36,10 @@ namespace SXML
         {
             if (attributeRun)
                 return;
-            if (!anyMembers && !options.inLine)
+            if (!anyMembers && options.inLineCounter == 0)
                 stream << '>';
             anyMembers = true;
-            options.inLine = true;
+            options.inLineCounter = 2;
             xmlify(stream, name, value.get(), options);
         }
 
@@ -50,7 +50,7 @@ namespace SXML
         {
             if (attributeRun)
                 return;
-            if (!anyMembers && !options.inLine)
+            if (!anyMembers && options.inLineCounter == 0)
                 stream << '>';
             anyMembers = true;
             stream << static_cast <typename U::type>(value);
@@ -62,7 +62,7 @@ namespace SXML
         {
             if (attributeRun)
                 return;
-            if (!anyMembers && !options.inLine)
+            if (!anyMembers && options.inLineCounter == 0)
                 stream << '>';
             anyMembers = true;
             xmlify(stream, name, value, options);
@@ -81,7 +81,7 @@ namespace SXML
                 boost::fusion::result_of::size<T>::type::value
             > range;
 
-            if (!options.inLine)
+            if (options.inLineCounter == 0)
                 stream << '<' << name;
 
             bool anyMembers = false;
@@ -108,7 +108,7 @@ namespace SXML
                 std::cref(options))
             );
 
-            if (!options.inLine)
+            if (options.inLineCounter == 0)
             {
                 if (!anyMembers)
                 {
@@ -128,7 +128,7 @@ namespace SXML
         {
         public:
             template <typename Index>
-            void operator()(Index, bool attributeRun, bool& anyMembers, std::ostream& os, T const& object, XmlifyOptions const& options) const
+            void operator()(Index, bool attributeRun, bool& anyMembers, std::ostream& os, T const& object, XmlifyOptions options) const
             {
                 auto const& member = boost::fusion::at <Index> (object);
 
@@ -155,6 +155,7 @@ namespace SXML
             options.inObject = true;
             AdaptedXmlifier <Derived> xmlifier;
             options.inArray = false;
+            options.inLineCounter = std::max(0, options.inLineCounter - 1);
             return xmlifier(stream, name, *static_cast <Derived const*> (this), options);
         }
         virtual ~Xmlifiable() = default;
