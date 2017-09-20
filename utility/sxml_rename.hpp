@@ -1,5 +1,6 @@
-#include "../xmlify/sxml_core.hpp"
+#pragma once
 
+#include "../xmlify/sxml_core.hpp"
 #include "../xml_parse/sxml_parse_core.hpp"
 
 #include "sxml_meta_util.hpp"
@@ -100,13 +101,6 @@ namespace SXML
         constexpr static const char* getName()
         {
             return name::c_str;
-        }
-
-        std::ostream& xmlify(std::ostream& stream, std::string const&, XmlifyOptions const& options) const
-        {
-            using namespace Internal;
-
-            return SXML::xmlify(stream, name::c_str, objectValue_, options);
         }
 
     private:
