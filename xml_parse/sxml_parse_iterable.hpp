@@ -7,26 +7,6 @@ namespace SXML
 {
     namespace Internal
     {
-        template <typename T>
-        struct emplacer;
-
-        #define SXML_DECLARE_EMPLACER(CONTAINER, FUNCTION) \
-        template <typename... List> \
-        struct emplacer <CONTAINER <List...>> \
-        { \
-            template <typename T> \
-            static void emplace(CONTAINER <List...>& container, T&& element) \
-            { \
-                container.FUNCTION(std::forward <T&&>(element)); \
-            } \
-        }
-
-        SXML_DECLARE_EMPLACER(std::vector, emplace_back);
-        SXML_DECLARE_EMPLACER(std::deque, emplace_back);
-        SXML_DECLARE_EMPLACER(std::set, emplace);
-        SXML_DECLARE_EMPLACER(std::list, emplace_back);
-        SXML_DECLARE_EMPLACER(std::forward_list, emplace_back);
-
         template <typename T, typename... L, template <typename...> class ContainerT>
         void xml_parse_generic_container(
             ContainerT <T, L...>& value,

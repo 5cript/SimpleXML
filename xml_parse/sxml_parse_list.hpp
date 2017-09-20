@@ -1,7 +1,10 @@
 #pragma once
 
-#include "sxml_parse_iterable.hpp"
 #include <list>
+#include "sxml_parse_iterable_common.hpp"
+SXML_DECLARE_EMPLACER(std::list, emplace_back);
+
+#include "sxml_parse_iterable.hpp"
 
 namespace SXML
 {

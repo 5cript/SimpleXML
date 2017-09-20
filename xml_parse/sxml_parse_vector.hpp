@@ -1,9 +1,12 @@
 #pragma once
 
+#include <vector>
+#include "sxml_parse_iterable_common.hpp"
+SXML_DECLARE_EMPLACER(std::vector, emplace_back)
+
 #include "sxml_parse_core.hpp"
 #include "sxml_parse_iterable.hpp"
 
-#include <vector>
 
 namespace SXML
 {
