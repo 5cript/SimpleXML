@@ -163,7 +163,7 @@ namespace SXML
 
     template <typename T,
               class = typename std::enable_if <std::is_class <T>::value>::type,
-              class = typename std::enable_if <Internal::isXmlObject <T>::value>::type>
+              class = typename std::enable_if <SFINAE_HAS_XMLIFY(T)>::type>
     std::ostream& xmlify(std::ostream& stream, std::string const& name, T const& value, XmlifyOptions const& options = {})
     {
         using namespace Internal;

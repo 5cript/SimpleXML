@@ -1,6 +1,7 @@
 #pragma once
 
 #include <utility>
+#include <type_traits>
 
 namespace SXML
 {
@@ -61,8 +62,15 @@ namespace SXML
         {
         }
 
-        Inline()
+        template <typename U = T>
+        Inline(typename std::enable_if <std::is_default_constructible <U>::value, void>::type* = nullptr)
             : value()
+        {
+        }
+
+        template <typename... List, typename = typename std::enable_if <sizeof...(List)!=0, void>::type>
+        Inline(List&&... initializers)
+            : value{std::forward <List> (initializers)...}
         {
         }
     };
