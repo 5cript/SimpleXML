@@ -1,46 +1,11 @@
 #pragma once
 
+#include "../utility/sxml_object.hpp"
+
 namespace SXML
 {
-    namespace Internal
-    {
-        template <typename Type, typename enable = void>
-        class isParsable
-        {
-        public:
-            static const bool value = false;
-        };
-
-        template <typename Type>
-        class isParsable <Type, typename std::enable_if<std::is_class<Type>::value>::type>
-        {
-        private:
-            class yes { char m; };
-            class no { yes m[2];};
-            struct BaseMixin
-            {
-                void xml_parse(NodeName const&,
-                               PropertyTree const&,
-                               XmlParseOptions const&)
-                {}
-            };
-            struct Base : public Type, public BaseMixin {};
-            template <typename T, T t>  class Helper{};
-
-            template <typename U>
-            static no deduce(U*, Helper<
-                void (BaseMixin::*)(NodeName const&,
-                                    PropertyTree const&,
-                                    XmlParseOptions const&),
-                &U::parse>* = nullptr);
-            static yes deduce(...);
-        public:
-            static const bool value = sizeof(yes) == sizeof(deduce((Base*)(0)));
-        };
-    }
-
     template <typename T>
-    typename std::enable_if <Internal::isParsable <T>::value, void>::type
+    typename std::enable_if <SFINAE_HAS_XML_PARSE(T), void>::type
     xml_parse(T& value, NodeName const& name, PropertyTree const& tree, XmlParseOptions const& options = {})
     {
         value.xml_parse(name, tree, options);

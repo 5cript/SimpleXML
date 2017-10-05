@@ -17,6 +17,7 @@ namespace SXML
 {
     namespace Internal
     {
+        // Attribute
         template <typename U>
         typename std::enable_if <isAttribute<U>::value>::type
         memberTypeDependendParser(U& value, bool attributeRun, NodeName const& name, PropertyTree const& object, XmlParseOptions const& options)
@@ -27,6 +28,7 @@ namespace SXML
             xml_parse(value.get(), name, object, options);
         }
 
+        // Content
         template <typename U>
         typename std::enable_if <isContent<U>::value>::type
         memberTypeDependendParser(U& value, bool attributeRun, NodeName const& name, PropertyTree const& object, XmlParseOptions const& options)
@@ -42,6 +44,7 @@ namespace SXML
             SXML_DEFAULT_CATCH(typename U::type{}, typename U::type{})
         }
 
+        // Inline
         template <typename U>
         typename std::enable_if <isInline<U>::value>::type
         memberTypeDependendParser(U& value, bool attributeRun, NodeName const& name, PropertyTree const& object, XmlParseOptions const& options)
@@ -49,9 +52,11 @@ namespace SXML
             if (attributeRun)
                 return;
 
-            xml_parse(value.get(), name, object, options);
+            auto TEST = static_cast <std::string> (name);
+            xml_parse(value.get(), name.parent(), object, options);
         }
 
+        // Else
         template <typename U>
         typename std::enable_if <!isAttribute<U>::value && !isContent<U>::value && !isInline<U>::value>::type
         memberTypeDependendParser(U& value, bool attributeRun, NodeName const& name, PropertyTree const& object, XmlParseOptions const& options)

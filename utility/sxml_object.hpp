@@ -1,6 +1,8 @@
 #pragma once
 
 #include "../xmlify/sxml_options.hpp"
+#include "../xml_parse/sxml_parse_options.hpp"
+#include "../utility/sxml_rename.hpp"
 
 #include <iosfwd>
 #include <utility>
@@ -8,47 +10,6 @@
 
 namespace SXML
 {
-    /*
-    namespace Internal
-    {
-        template <typename Type,
-                   class = typename std::enable_if <std::is_class <Type>::value>::type>
-        class isXmlObject
-        {
-            class yes { char m; };
-            class no { yes m[2]; };
-
-            struct BaseMixin
-            {
-                std::ostream& xmlify(std::ostream& stream, std::string const&, XmlifyOptions) const { return stream; }
-            };
-            struct Base : public Type, public BaseMixin {};
-
-            template <typename T, T> class Helper {};
-
-            template <typename U>
-            static no deduce(U*, Helper <std::ostream& (BaseMixin::*)(std::ostream&, std::string const&, XmlifyOptions), &U::xmlify>* = nullptr);
-
-            static yes deduce(...);
-
-        public:
-            static const bool value = sizeof(yes) == sizeof(deduce((Base*)(nullptr)));
-        };
-
-        template <typename T>
-        constexpr typename std::enable_if <std::is_class <T>::value, bool>::type isXmlObject2(T)
-        {
-            return isXmlObject <T>::value;
-        }
-
-        template <typename T>
-        constexpr typename std::enable_if <!std::is_class <T>::value, bool>::type isXmlObject2(T)
-        {
-            return false;
-        }
-    }
-    */
-
     namespace Internal
     {
         template< class... >
@@ -118,6 +79,19 @@ namespace SXML
         using has_xmlify_2 = decltype(std::declval<T&>().xmlify(std::declval<std::ostream&>(),
                                                                 std::declval<std::string const&>(),
                                                                 std::declval<XmlifyOptions const&>()));
+
+        template <typename T>
+        using has_xml_parse_1 = decltype(std::declval<T&>().xml_parse(std::declval<NodeName const&>(),
+                                                                    std::declval<PropertyTree const&>(),
+                                                                    std::declval<XmlParseOptions const&>()));
+
+        template <typename T>
+        using has_xml_parse_2 = decltype(std::declval<T&>().xml_parse(std::declval<NodeName const&>(),
+                                                                    std::declval<PropertyTree const&>(),
+                                                                    std::declval<XmlParseOptions>()));
+
+        #define SFINAE_HAS_XML_PARSE(T) Internal::experimental::is_detected_exact_v <void, Internal::has_xml_parse_1, T> || \
+                                        Internal::experimental::is_detected_exact_v <void, Internal::has_xml_parse_2, T>
 
         #define SFINAE_HAS_XMLIFY(T) Internal::experimental::is_detected_exact_v <std::ostream&, Internal::has_xmlify_1, T> || \
                                      Internal::experimental::is_detected_exact_v <std::ostream&, Internal::has_xmlify_2, T>
