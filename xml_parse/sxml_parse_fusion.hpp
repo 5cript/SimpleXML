@@ -52,7 +52,6 @@ namespace SXML
             if (attributeRun)
                 return;
 
-            auto TEST = static_cast <std::string> (name);
             xml_parse(value.get(), name.parent(), object, options);
         }
 
@@ -116,13 +115,13 @@ namespace SXML
 
                 tempName += boost::fusion::extension::struct_member_name<T, Index::value>::call();
 
-                Internal::memberTypeDependendParser <typename std::decay <decltype(member)>::type> (
-                    member,
-                    attributeRun,
-                    tempName,
-                    tree,
-                    options
-                );
+				Internal::memberTypeDependendParser <typename std::decay <decltype(member)>::type> (
+					member,
+					attributeRun,
+					tempName,
+					tree,
+					options
+				);
             }
             _helper(int len) : len(len) {}
         private:

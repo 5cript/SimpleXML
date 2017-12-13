@@ -7,6 +7,8 @@ namespace SXML
     template <typename T, typename Name>
     void xml_parse(SXML::Rename <T, Name>& value, NodeName const& name, PropertyTree const& object, XmlParseOptions const& options)
     {
-        return SXML::xml_parse(value.getValue(), Name::c_str, object, options);
+		auto actual = name.parent();
+		actual += Name::c_str;
+        return SXML::xml_parse(value.getValue(), actual, object, options);
     }
 }
