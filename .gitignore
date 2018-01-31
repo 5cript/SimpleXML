@@ -8,3 +8,4 @@ obj/*
 test.txt
 build/*
 *.save-failed
+build.sh
