@@ -15,6 +15,11 @@ namespace SXML
             return value;
         }
 
+        T get() const
+        {
+            return value;
+        }
+
         operator T() const
         {
             return value;
