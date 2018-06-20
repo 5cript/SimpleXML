@@ -3,6 +3,8 @@
 #include "../utility/sxml_attribute.hpp"
 #include "../xml_parse/sxml_parse_fundamental.hpp"
 #include "../xmlify/sxml_fundamental.hpp"
+#include "../xmlify/sxml_optional.hpp"
+
 
 #include <boost/fusion/adapted.hpp>
 
@@ -16,9 +18,10 @@ namespace SXML
         struct map_dummy
         {
             SXML::Attribute <KeyT> id;
-            typename std::conditional <Mode, ValueT const&, ValueT>::type value;
+            using value_type_qualified = ValueT;
+            ValueT value;
 
-            map_dummy(KeyT const& id, ValueT const& value)
+            map_dummy(KeyT const& id, value_type_qualified value)
                 : id{id}
                 , value{value}
             {
@@ -46,7 +49,7 @@ namespace SXML
             {
                 options.inObject = true;
                 options.inArray = false;
-                options.inLineCounter = options.inLineCounter + 2;
+                options.inLineCounter = 2;
 
                 stream << "<" << name << " id=\"" << id << "\">";
                 SXML::xmlify(stream, "nope", value, options);

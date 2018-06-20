@@ -157,6 +157,7 @@ namespace SXML
             options.inArray = false;
             options.inLineCounter = std::max(0, options.inLineCounter - 1);
             return xmlifier(stream, name, *static_cast <Derived const*> (this), options);
+
         }
         virtual ~Xmlifiable() = default;
     };
@@ -164,7 +165,7 @@ namespace SXML
     template <typename T,
               class = typename std::enable_if <std::is_class <T>::value>::type,
               class = typename std::enable_if <SFINAE_HAS_XMLIFY(T)>::type>
-    std::ostream& xmlify(std::ostream& stream, std::string const& name, T const& value, XmlifyOptions const& options = {})
+    std::ostream& xmlify(std::ostream& stream, std::string const& name, T const& value, XmlifyOptions options = {})
     {
         using namespace Internal;
 

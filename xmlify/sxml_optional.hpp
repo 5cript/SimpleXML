@@ -10,7 +10,7 @@ namespace SXML
     std::ostream& xmlify(std::ostream& stream, std::string const& name, boost::optional <T> const& value, XmlifyOptions const& options = {})
     {
         if (value)
-            xmlify(stream, name, value.get(), options);
+            return xmlify(stream, name, value.get(), options);
         return stream;
     }
 }
