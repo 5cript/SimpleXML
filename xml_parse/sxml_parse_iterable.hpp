@@ -33,7 +33,6 @@ namespace SXML
                     T temp;
                     xml_parse(temp, "", i->second, options);
                     emplacer<ContainerT<T, L...>>::emplace(value, std::move(temp));
-                    //ContainerT<T, L...>.emplace(value, std::move(temp));
                 }
             }
             SXML_DEFAULT_CATCH({}, {})
