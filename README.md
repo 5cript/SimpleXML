@@ -92,8 +92,6 @@ struct A
 	, public SXML::Parsable <A>
 {
     SXML::Rename <std::string, SXML_SHORT_STRING("__weird_name")> goodName{"Hello"};
-
-    A() {}
 };
 BOOST_FUSION_ADAPT_STRUCT(A, goodName)
 
