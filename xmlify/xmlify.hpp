@@ -14,4 +14,5 @@
 #include "sxml_unordered_set.hpp"
 #include "sxml_fusion.hpp"
 #include "sxml_optional.hpp"
+#include "sxml_renamed.hpp"
 #include "sxml_pair.hpp"
