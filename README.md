@@ -111,7 +111,7 @@ This is especially useful for XML files that have bad structuring, but you dont 
 #include <SimpleXML/xmlify/xmlify.hpp>
 
 // NEW!
-#include <SimpleXML/utility/sxml_attribute.hpp>
+#include <SimpleXML/utility/sxml_inline.hpp>
 
 struct B
 	: public SXML::Xmlifiable <B>
